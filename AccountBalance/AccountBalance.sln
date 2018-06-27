@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountBalance", "AccountBalance\AccountBalance.csproj", "{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountBalance2", "AccountBalance2\AccountBalance2.csproj", "{60C0C0A6-F8A3-4D36-A397-4133645D256A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E6C368F-C957-46D4-99E4-BF72D40D61D7}
+	EndGlobalSection
+EndGlobal
