@@ -8,10 +8,8 @@ using ReactiveDomain.Messaging;
 using ReactiveDomain.Messaging.Bus;
 using ReactiveDomain.Util;
 
-namespace AccountBalance2
-{
-    class Program
-    {
+namespace AccountBalance2 {
+    class Program {
 
         static void Main(string[] args) {
             Console.WriteLine("Hello World!");
@@ -22,8 +20,7 @@ namespace AccountBalance2
         }
     }
 
-    public class Application
-    {
+    public class Application {
         private IStreamStoreConnection conn;
         private IRepository repo;
         private Guid _accountId = Guid.Parse("06AC5641-EDE6-466F-9B37-DD8304D05A84");
@@ -35,47 +32,52 @@ namespace AccountBalance2
             esConnection.ConnectAsync().Wait();
             IStreamNameBuilder namer = new PrefixedCamelCaseStreamNameBuilder();
             IEventSerializer ser = new JsonMessageSerializer();
-            repo = new StreamStoreRepository(namer,conn,ser);
+            repo = new StreamStoreRepository(namer, conn, ser);
             Account acct = null;
             try {
                 repo.Save(new Account(_accountId));
             }
             catch (Exception e) {
             }
-            IListener listener = new StreamListener("Account",conn,namer,ser);
-            _readModel = new BalanceReadModel( ()=> listener, _accountId);
+            IListener listener = new StreamListener("Account", conn, namer, ser);
+            _readModel = new BalanceReadModel(() => listener, _accountId);
         }
         public void Run() {
-            var cmd = new []{""};
+            var cmd = new[] { "" };
             Account acct;
             do {
 
-                cmd =  Console.ReadLine().Split(' ');
+                cmd = Console.ReadLine().Split(' ');
                 switch (cmd[0].ToLower()) {
                     case "credit":
-                        acct = repo.GetById<Account>(_accountId);    
+                        acct = repo.GetById<Account>(_accountId);
                         acct.Credit(uint.Parse(cmd[1]));
                         repo.Save(acct);
                         Console.WriteLine($"got credit {cmd[1]}");
                         break;
                     case "debit":
-                        acct = repo.GetById<Account>(_accountId);
-                        acct.Debit(uint.Parse(cmd[1]));
-                        repo.Save(acct);
-                        Console.WriteLine($"got debit {cmd[1]}");
+                        try {
+
+                            acct = repo.GetById<Account>(_accountId);
+                            acct.Debit(uint.Parse(cmd[1]));
+                            repo.Save(acct);
+                            Console.WriteLine($"got debit {cmd[1]}");
+                        }
+                        catch (Exception e) {
+                            Console.WriteLine(e);
+                        }
                         break;
                 }
-                
+
             } while (cmd[0].ToLower() != "exit");
         }
     }
 
-    public class BalanceReadModel : 
+    public class BalanceReadModel :
         ReadModelBase,
         IHandle<Credit>,
-        IHandle<Debit>
-    {
-        public BalanceReadModel(Func<IListener> listener, Guid accountId):base(listener) {
+        IHandle<Debit> {
+        public BalanceReadModel(Func<IListener> listener, Guid accountId) : base(listener) {
             EventStream.Subscribe<Credit>(this);
             EventStream.Subscribe<Debit>(this);
             Start<Account>(accountId);
@@ -88,7 +90,7 @@ namespace AccountBalance2
             redraw();
 
         }
-        public void Handle(Debit message){
+        public void Handle(Debit message) {
             balance -= (int)message.Amount;
             redraw();
         }
@@ -98,31 +100,39 @@ namespace AccountBalance2
             Console.WriteLine($"ballance = { balance}");
         }
     }
-    public class Account : EventDrivenStateMachine
-    {
-         public Account() {
-         setup();   
+    public class Account : EventDrivenStateMachine {
+        private long _balance;
+        public Account() {
+            setup();
         }
-        public Account(Guid id):this() {
-            
+        public Account(Guid id) : this() {
+
             Raise(new AccountCreated(id));
         }
-
+        class MySecretEvent:Message{}
         public void setup() {
-            Register<AccountCreated>( evt => Id = evt.Id);
+            Register<AccountCreated>(evt => Id = evt.Id);
+            Register<Debit>(Apply);
+            Register<Credit>(Apply);
         }
-
+        private void Apply(Debit @event) {
+            _balance -= @event.Amount;
+        }
+        private void Apply(Credit @event) {
+            _balance += @event.Amount;
+        }
         public void Credit(uint amount) {
             //nothing to check
             Raise(new Credit(amount));
         }
 
         public void Debit(uint amount) {
-            //nothing to check
+            Ensure.Nonnegative(_balance - amount, "Balance");
+
             Raise(new Debit(amount));
         }
     }
-    public class AccountCreated:Message{
+    public class AccountCreated : Message {
         public readonly Guid Id;
 
         public AccountCreated(Guid id) {
@@ -130,21 +140,19 @@ namespace AccountBalance2
         }
     }
 
-    public class Debit : Message
-        {
-            public uint Amount;
-            public Debit(uint amount) {
-                Amount = amount;
-            }
+    public class Debit : Message {
+        public uint Amount;
+        public Debit(uint amount) {
+            Amount = amount;
         }
+    }
 
-        public class Credit : Message
-        {
-            public uint Amount;
+    public class Credit : Message {
+        public uint Amount;
 
-            public Credit(uint amount) {
-                Amount = amount;
-            }
+        public Credit(uint amount) {
+            Amount = amount;
         }
-    
+    }
+
 }
