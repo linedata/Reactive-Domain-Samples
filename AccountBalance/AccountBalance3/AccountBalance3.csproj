@@ -6,21 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="EventStore.ClientAPI">
-      <HintPath>..\..\..\reactive-domain-linedata\bld\Debug\net472\EventStore.ClientAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveDomain.Core">
-      <HintPath>..\..\..\reactive-domain-linedata\bld\Debug\net472\ReactiveDomain.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveDomain.Foundation">
-      <HintPath>..\..\..\reactive-domain-linedata\bld\Debug\net472\ReactiveDomain.Foundation.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveDomain.Messaging">
-      <HintPath>..\..\..\reactive-domain-linedata\bld\Debug\net472\ReactiveDomain.Messaging.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveDomain.Persistence">
-      <HintPath>..\..\..\reactive-domain-linedata\bld\Debug\net472\ReactiveDomain.Persistence.dll</HintPath>
-    </Reference>
+    <PackageReference Include="ReactiveDomain.Foundation" Version="0.8.17" />
   </ItemGroup>
 
 </Project>
