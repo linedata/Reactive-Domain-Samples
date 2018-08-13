@@ -13,7 +13,7 @@ namespace AccountBalance3 {
         private readonly Guid _accountId = Guid.Parse("06AC5641-EDE6-466F-9B37-DD8304D05A84");
 
         public void Bootstrap() {
-            IEventStoreConnection esConnection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@localhost:1113");
+            var esConnection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@localhost:1113");
             _conn = new EventStoreConnectionWrapper(esConnection);
             esConnection.Connected += (_, __) => Console.WriteLine("Connected");
             esConnection.ConnectAsync().Wait();
@@ -31,10 +31,10 @@ namespace AccountBalance3 {
 
         public void Run() {
             string[] cmd;
-            Account acct;
             do {
 
                 cmd = Console.ReadLine().Split(' ');
+                Account acct;
                 switch (cmd[0].ToLower())
                 {
                     case "credit":

@@ -7,7 +7,7 @@ namespace AccountBalance3 {
         ReadModelBase,
         IHandle<AccountMsgs.Credit>,
         IHandle<AccountMsgs.Debit> {
-        public BalanceReadModel(Func<IListener> listener, Guid accountId) : base(listener) {
+        public BalanceReadModel(Func<IListener> listener, Guid accountId) : base(nameof(BalanceReadModel), listener) {
             EventStream.Subscribe<AccountMsgs.Credit>(this);
             EventStream.Subscribe<AccountMsgs.Debit>(this);
             Start<Account>(accountId);
@@ -18,8 +18,8 @@ namespace AccountBalance3 {
         public void Handle(AccountMsgs.Credit message) {
             _balance += (int)message.Amount;
             Redraw();
-
         }
+
         public void Handle(AccountMsgs.Debit message) {
             _balance -= (int)message.Amount;
             Redraw();
