@@ -27,7 +27,7 @@ namespace AccountBalance3 {
 
         private void Redraw() {
             Console.Clear();
-            Console.WriteLine($"balance = { _balance}");
+            Console.WriteLine($"balance = {_balance}");
         }
     }
 }
