@@ -21,6 +21,7 @@ namespace AccountBalance3
             _repo = repo;
 
             _dispatcher.Subscribe<AccountMsgs.CreateAccount>(this);
+            _dispatcher.Subscribe<AccountMsgs.DebitAccount>(this);
         }
 
         public CommandResponse Handle(AccountMsgs.CreateAccount command)
@@ -35,6 +36,7 @@ namespace AccountBalance3
         {
             var account = _repo.GetById<Account>(command.AccountId);
             account.Debit(command.Amount, command);
+            _repo.Save(account);
             return command.Succeed();
         }
 
@@ -51,6 +53,7 @@ namespace AccountBalance3
             if (disposing)
             {
                 _dispatcher.Unsubscribe<AccountMsgs.CreateAccount>(this);
+                _dispatcher.Unsubscribe<AccountMsgs.DebitAccount>(this);
             }
             _disposed = true;
         }
