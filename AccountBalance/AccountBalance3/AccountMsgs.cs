@@ -29,10 +29,30 @@ namespace AccountBalance3 {
                 AccountId = accountId;
             }
         }
-        public class Debit : Message
+
+        public class DebitAccount : Command
+        {
+            public readonly Guid AccountId;
+            public readonly uint Amount;
+
+            public DebitAccount(
+                Guid accountId,
+                uint amount,
+                CorrelatedMessage source)
+                : base(source)
+            {
+                AccountId = accountId;
+                Amount = amount;
+            }
+        }
+
+        public class Debit : Event
         {
             public readonly uint Amount;
-            public Debit(uint amount)
+            public Debit(
+                uint amount,
+                CorrelatedMessage source)
+                : base(source ?? NewRoot())
             {
                 Amount = amount;
             }

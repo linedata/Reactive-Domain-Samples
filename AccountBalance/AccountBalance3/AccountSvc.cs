@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ReactiveDomain.Foundation;
 using ReactiveDomain.Messaging;
 using ReactiveDomain.Messaging.Bus;
@@ -11,7 +7,8 @@ namespace AccountBalance3
 {
     class AccountSvc :
         IDisposable,
-        IHandleCommand<AccountMsgs.CreateAccount>
+        IHandleCommand<AccountMsgs.CreateAccount>,
+        IHandleCommand<AccountMsgs.DebitAccount>
     {
         private readonly IDispatcher _dispatcher;
         private readonly IRepository _repo;
@@ -31,6 +28,13 @@ namespace AccountBalance3
             if (_repo.TryGetById<Account>(command.AccountId, out var account))
                 return command.Fail(new Exception($"Account with ID '{command.AccountId}' already exists."));
             _repo.Save(new Account(command.AccountId, command));
+            return command.Succeed();
+        }
+
+        public CommandResponse Handle(AccountMsgs.DebitAccount command)
+        {
+            var account = _repo.GetById<Account>(command.AccountId);
+            account.Debit(command.Amount, command);
             return command.Succeed();
         }
 

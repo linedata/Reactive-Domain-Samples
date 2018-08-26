@@ -31,10 +31,10 @@ namespace AccountBalance3 {
             Raise(new AccountMsgs.Credit(amount));
         }
 
-        public void Debit(uint amount) {
+        public void Debit(uint amount, CorrelatedMessage source) {
             Ensure.Nonnegative(_balance - amount, "Balance");
 
-            Raise(new AccountMsgs.Debit(amount));
+            Raise(new AccountMsgs.Debit(amount, source));
         }
     }
 }

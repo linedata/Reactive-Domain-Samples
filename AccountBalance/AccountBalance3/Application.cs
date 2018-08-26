@@ -61,10 +61,10 @@ namespace AccountBalance3
                     case "debit":
                         try
                         {
-
-                            acct = _repo.GetById<Account>(_accountId);
-                            acct.Debit(uint.Parse(cmd[1]));
-                            _repo.Save(acct);
+                            _dispatcher.Send(new AccountMsgs.DebitAccount(
+                                                    _accountId,
+                                                    uint.Parse(cmd[1]),
+                                                    CorrelatedMessage.NewRoot()));
                             Console.WriteLine($"got debit {cmd[1]}");
                         }
                         catch (Exception e)
