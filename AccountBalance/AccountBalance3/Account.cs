@@ -10,14 +10,13 @@ namespace AccountBalance3 {
         private Account() {
             Setup();
         }
-        public Account(Guid id) : this() {
-
-            Raise(new AccountMsgs.AccountCreated(id));
+        public Account(Guid id, CorrelatedMessage source) : this() {
+            Raise(new AccountMsgs.AccountCreated(id, source));
         }
         class MySecretEvent:Message{}
 
         private void Setup() {
-            Register<AccountMsgs.AccountCreated>(evt => Id = evt.Id);
+            Register<AccountMsgs.AccountCreated>(evt => Id = evt.AccountId);
             Register<AccountMsgs.Debit>(Apply);
             Register<AccountMsgs.Credit>(Apply);
         }

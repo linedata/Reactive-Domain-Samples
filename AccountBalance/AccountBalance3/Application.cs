@@ -3,16 +3,23 @@ using EventStore.ClientAPI;
 using ReactiveDomain;
 using ReactiveDomain.EventStore;
 using ReactiveDomain.Foundation;
+using ReactiveDomain.Messaging;
+using ReactiveDomain.Messaging.Bus;
 
-namespace AccountBalance3 {
-    public class Application : IDisposable {
+namespace AccountBalance3
+{
+    public class Application : IDisposable
+    {
         private IStreamStoreConnection _conn;
         private IRepository _repo;
         private BalanceReadModel _readModel;
+        private IDispatcher _dispatcher;
+        private AccountSvc _accountSvc;
 
         private readonly Guid _accountId = Guid.Parse("06AC5641-EDE6-466F-9B37-DD8304D05A84");
 
-        public void Bootstrap() {
+        public void Bootstrap()
+        {
             var esConnection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@localhost:1113");
             _conn = new EventStoreConnectionWrapper(esConnection);
             esConnection.Connected += (_, __) => Console.WriteLine("Connected");
@@ -20,18 +27,26 @@ namespace AccountBalance3 {
             IStreamNameBuilder namer = new PrefixedCamelCaseStreamNameBuilder();
             IEventSerializer ser = new JsonMessageSerializer();
             _repo = new StreamStoreRepository(namer, _conn, ser);
-            try {
-                _repo.Save(new Account(_accountId));
+            _dispatcher = new Dispatcher("main");
+            _accountSvc = new AccountSvc(_dispatcher, _repo);
+            try
+            {
+                _dispatcher.Send(new AccountMsgs.CreateAccount(
+                                        _accountId,
+                                        CorrelatedMessage.NewRoot()));
             }
             catch (Exception e) {
             }
+
             IListener listener = new StreamListener("Account", _conn, namer, ser);
             _readModel = new BalanceReadModel(() => listener, _accountId);
         }
 
-        public void Run() {
+        public void Run()
+        {
             string[] cmd;
-            do {
+            do
+            {
 
                 cmd = Console.ReadLine().Split(' ');
                 Account acct;
@@ -66,6 +81,8 @@ namespace AccountBalance3 {
         {
             _readModel?.Dispose();
             _conn?.Dispose();
+            _dispatcher.Dispose();
+            _accountSvc.Dispose();
         }
     }
 }

@@ -4,13 +4,29 @@ using ReactiveDomain.Messaging;
 namespace AccountBalance3 {
     public class AccountMsgs
     {
-        public class AccountCreated : Message
+        public class CreateAccount : Command
         {
-            public readonly Guid Id;
+            public readonly Guid AccountId;
 
-            public AccountCreated(Guid id)
+            public CreateAccount(
+                Guid accountId,
+                CorrelatedMessage source)
+                : base(source)
             {
-                Id = id;
+                AccountId = accountId;
+            }
+        }
+
+        public class AccountCreated : Event
+        {
+            public readonly Guid AccountId;
+
+            public AccountCreated(
+                Guid accountId,
+                CorrelatedMessage source)
+                : base(source ?? NewRoot())
+            {
+                AccountId = accountId;
             }
         }
         public class Debit : Message
