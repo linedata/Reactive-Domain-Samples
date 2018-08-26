@@ -8,7 +8,8 @@ namespace AccountBalance3
     class AccountSvc :
         IDisposable,
         IHandleCommand<AccountMsgs.CreateAccount>,
-        IHandleCommand<AccountMsgs.DebitAccount>
+        IHandleCommand<AccountMsgs.DebitAccount>,
+        IHandleCommand<AccountMsgs.CreditAccount>
     {
         private readonly IDispatcher _dispatcher;
         private readonly IRepository _repo;
@@ -22,6 +23,7 @@ namespace AccountBalance3
 
             _dispatcher.Subscribe<AccountMsgs.CreateAccount>(this);
             _dispatcher.Subscribe<AccountMsgs.DebitAccount>(this);
+            _dispatcher.Subscribe<AccountMsgs.CreditAccount>(this);
         }
 
         public CommandResponse Handle(AccountMsgs.CreateAccount command)
@@ -40,6 +42,14 @@ namespace AccountBalance3
             return command.Succeed();
         }
 
+        public CommandResponse Handle(AccountMsgs.CreditAccount command)
+        {
+            var account = _repo.GetById<Account>(command.AccountId);
+            account.Credit(command.Amount, command);
+            _repo.Save(account);
+            return command.Succeed();
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -54,6 +64,7 @@ namespace AccountBalance3
             {
                 _dispatcher.Unsubscribe<AccountMsgs.CreateAccount>(this);
                 _dispatcher.Unsubscribe<AccountMsgs.DebitAccount>(this);
+                _dispatcher.Unsubscribe<AccountMsgs.CreditAccount>(this);
             }
             _disposed = true;
         }

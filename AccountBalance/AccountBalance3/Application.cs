@@ -37,7 +37,6 @@ namespace AccountBalance3
             }
             catch (Exception e) {
             }
-
             IListener listener = new StreamListener("Account", _conn, namer, ser);
             _readModel = new BalanceReadModel(() => listener, _accountId);
         }
@@ -49,13 +48,13 @@ namespace AccountBalance3
             {
 
                 cmd = Console.ReadLine().Split(' ');
-                Account acct;
                 switch (cmd[0].ToLower())
                 {
                     case "credit":
-                        acct = _repo.GetById<Account>(_accountId);
-                        acct.Credit(uint.Parse(cmd[1]));
-                        _repo.Save(acct);
+                        _dispatcher.Send(new AccountMsgs.CreditAccount(
+                                                 _accountId,
+                                                 uint.Parse(cmd[1]),
+                                                 CorrelatedMessage.NewRoot()));
                         Console.WriteLine($"got credit {cmd[1]}");
                         break;
                     case "debit":

@@ -58,11 +58,30 @@ namespace AccountBalance3 {
             }
         }
 
-        public class Credit : Message
+        public class CreditAccount : Command
+        {
+            public readonly Guid AccountId;
+            public readonly uint Amount;
+
+            public CreditAccount(
+                Guid accountId,
+                uint amount,
+                CorrelatedMessage source)
+                : base(source)
+            {
+                AccountId = accountId;
+                Amount = amount;
+            }
+        }
+
+        public class Credit : Event
         {
             public readonly uint Amount;
 
-            public Credit(uint amount)
+            public Credit(
+                uint amount,
+                CorrelatedMessage source)
+                : base(source ?? NewRoot())
             {
                 Amount = amount;
             }

@@ -26,9 +26,9 @@ namespace AccountBalance3 {
         private void Apply(AccountMsgs.Credit @event) {
             _balance += @event.Amount;
         }
-        public void Credit(uint amount) {
+        public void Credit(uint amount, CorrelatedMessage source) {
             //nothing to check
-            Raise(new AccountMsgs.Credit(amount));
+            Raise(new AccountMsgs.Credit(amount, source));
         }
 
         public void Debit(uint amount, CorrelatedMessage source) {
