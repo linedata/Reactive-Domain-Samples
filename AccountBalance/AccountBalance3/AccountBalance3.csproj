@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ReactiveDomain.Foundation" Version="0.8.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ReactiveDomain.Messaging">
+      <HintPath>..\..\..\..\reactive-domain\src\ReactiveDomain.Messaging\obj\Debug\net462\ReactiveDomain.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveDomain.Persistence">
+      <HintPath>..\..\..\..\reactive-domain\src\ReactiveDomain.Persistence\obj\Debug\net462\ReactiveDomain.Persistence.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
