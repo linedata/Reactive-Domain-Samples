@@ -1,8 +1,11 @@
 ﻿//#define RD_PLAIN
 //#define RD_DOMAIN
+//#define RD_DOMAINNOPORT
 //#define RD_GOSSIPARRAY
 //#define RD_GOSSIPARRAYONE
-#define RD_GOSSIPTCP
+//#define RD_GOSSIPARRAYNOPORT
+#define RD_GOSSIPARRAYNULLPORT
+//#define RD_GOSSIPTCP
 
 using System;
 using System.Net;
@@ -69,11 +72,20 @@ namespace AccountBalance3
 #if RD_DOMAIN
                 eventStoreLoader.Connect(creds, DnsName, HttpPort);
 #endif
+#if RD_DOMAINNOPORT
+                eventStoreLoader.Connect(creds, DnsName);
+#endif
 #if RD_GOSSIPARRAY
                 eventStoreLoader.Connect(creds, _ipAddressArray, _portArray);
 #endif
 #if RD_GOSSIPARRAYONE
                 eventStoreLoader.Connect(creds, _ipAddressArray, new [] {HttpPort});
+#endif
+#if RD_GOSSIPARRAYNOPORT
+                eventStoreLoader.Connect(creds, _ipAddressArray);
+#endif
+#if RD_GOSSIPARRAYNULLPORT
+                eventStoreLoader.Connect(creds, _ipAddressArray, null);
 #endif
 #if RD_GOSSIPTCP
                 eventStoreLoader.Connect(creds, _ipAddressArray, HttpPort);
