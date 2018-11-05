@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountBalance", "AccountBalance\AccountBalance.csproj", "{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountBalance", "AccountBalance\AccountBalance.csproj", "{D1FB1138-2D24-4B7E-B7D7-FD203AE23F1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountBalance2", "AccountBalance2\AccountBalance2.csproj", "{60C0C0A6-F8A3-4D36-A397-4133645D256A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountBalance2", "AccountBalance2\AccountBalance2.csproj", "{60C0C0A6-F8A3-4D36-A397-4133645D256A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountBalance3", "AccountBalance3\AccountBalance3.csproj", "{B07BD7F1-ABC3-4435-A554-5448AB0C4413}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60C0C0A6-F8A3-4D36-A397-4133645D256A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07BD7F1-ABC3-4435-A554-5448AB0C4413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07BD7F1-ABC3-4435-A554-5448AB0C4413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07BD7F1-ABC3-4435-A554-5448AB0C4413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07BD7F1-ABC3-4435-A554-5448AB0C4413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
