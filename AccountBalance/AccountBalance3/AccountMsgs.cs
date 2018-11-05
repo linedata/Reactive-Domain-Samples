@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using ReactiveDomain.Messaging;
 
 namespace AccountBalance3 {
@@ -24,7 +25,17 @@ namespace AccountBalance3 {
             public AccountCreated(
                 Guid accountId,
                 CorrelatedMessage source)
-                : base(source ?? NewRoot())
+                : base(source)
+            {
+                AccountId = accountId;
+            }
+
+            [JsonConstructor]
+            public AccountCreated(
+                Guid accountId,
+                CorrelationId correlationId,
+                SourceId sourceId)
+                : base(correlationId, sourceId)
             {
                 AccountId = accountId;
             }
@@ -49,10 +60,21 @@ namespace AccountBalance3 {
         public class Debit : Event
         {
             public readonly uint Amount;
+
             public Debit(
                 uint amount,
                 CorrelatedMessage source)
-                : base(source ?? NewRoot())
+                : base(source)
+            {
+                Amount = amount;
+            }
+
+            [JsonConstructor]
+            public Debit(
+                uint amount,
+                CorrelationId correlationId,
+                SourceId sourceId)
+                : base(correlationId, sourceId)
             {
                 Amount = amount;
             }
@@ -81,7 +103,17 @@ namespace AccountBalance3 {
             public Credit(
                 uint amount,
                 CorrelatedMessage source)
-                : base(source ?? NewRoot())
+                : base(source)
+            {
+                Amount = amount;
+            }
+
+            [JsonConstructor]
+            public Credit(
+                uint amount,
+                CorrelationId correlationId,
+                SourceId sourceId)
+                : base(correlationId, sourceId)
             {
                 Amount = amount;
             }
